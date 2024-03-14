@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class Slash : MonoBehaviour
 {
+	public int damage;
+
 	void OnTriggerEnter2D(Collider2D collision)
 	{
 		if (collision.CompareTag("Enemy"))
 		{
-			//collision.gameObject.GetComponent<Enemy>().TakeDamage(x);
+			collision.gameObject.GetComponent<Unit>().TakeDamage(damage);
 		}
 	}
 

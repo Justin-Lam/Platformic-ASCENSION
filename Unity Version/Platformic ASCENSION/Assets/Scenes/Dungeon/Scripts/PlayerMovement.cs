@@ -5,18 +5,21 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-	[Header("Movement")]
-	[SerializeField] float defaultMoveSpeed = 3.5f;
+	// Movement
+	float defaultMoveSpeed;
+	float moveSpeed;
+	Vector2 moveDirection;
+
+	[Header("Dashing")]
 	[SerializeField] float dashMoveSpeed;
 	[SerializeField][Tooltip("In seconds")] float dashLength;
 	[SerializeField] float dashCooldown;
-	float moveSpeed;
-	Vector2 moveDirection;
 	float dashLengthCounter = 0f;
 	float dashCooldownCounter = 0f;
 
-	[Header("Rigidbody")]
+	[Header("Rigidbody and collider")]
 	[SerializeField] Rigidbody2D rb;
+	[SerializeField] CircleCollider2D circleCollider;
 
 	[Header("Input Actions")]
 	[SerializeField] InputAction movementAction;
@@ -37,6 +40,10 @@ public class PlayerMovement : MonoBehaviour
 
 	void Start()
 	{
+		// Get defaultMoveSpeed
+		defaultMoveSpeed = GetComponent<Unit>().MoveSpeed;
+
+		// Initialize moveSpeed to defaultMoveSpeed
 		moveSpeed = defaultMoveSpeed;
 	}
 	void Update()
@@ -54,9 +61,10 @@ public class PlayerMovement : MonoBehaviour
 		{
 			dashLengthCounter -= Time.deltaTime;
 
-			// If we just stopped dashing, set moveSpeed back to default and fix dashLengthCounter if needed
-			if (dashLengthCounter <= 0)
+			// If we just stopped dashing, reenable collider, set moveSpeed back to default, and fix dashLengthCounter if needed
+			if (dashLengthCounter < 0)
 			{
+				circleCollider.enabled = true;
 				moveSpeed = defaultMoveSpeed;
 				dashLengthCounter = 0;
 			}
@@ -67,7 +75,7 @@ public class PlayerMovement : MonoBehaviour
 			dashCooldownCounter -= Time.deltaTime;
 
 			// Fix dashCooldownCounter if needed
-			if (dashCooldownCounter <= 0)
+			if (dashCooldownCounter < 0)
 			{
 				dashCooldownCounter = 0;
 			}
@@ -87,7 +95,10 @@ public class PlayerMovement : MonoBehaviour
 			// Check that the player is moving
 			if (moveDirection != Vector2.zero)
 			{
-				// Set moveSpeed
+				// Disable collider
+				circleCollider.enabled = false;
+
+				// Set adjustedMoveSpeed
 				moveSpeed = dashMoveSpeed;
 
 				// Set dashLengthCounter and dashCooldownCounter

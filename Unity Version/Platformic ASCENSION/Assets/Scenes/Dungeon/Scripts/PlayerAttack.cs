@@ -15,6 +15,10 @@ public class PlayerAttack : MonoBehaviour
 	[SerializeField] GameObject slashPrefab;
 	[SerializeField] GameObject bulletPrefab;
 	[SerializeField] Transform bulletSpawnPoint;
+	float slashCooldown;
+	float slashCooldownTimer = 0f;
+	float shootCooldown;
+	float shootCooldownTimer = 0f;
 
 	[Header("Input Actions")]
 	[SerializeField] InputAction attackAction;
@@ -27,8 +31,6 @@ public class PlayerAttack : MonoBehaviour
 	void OnEnable()
 	{
 		attackAction.Enable();
-		attackAction.performed += Attack;
-
 		switchWeaponAction.Enable();
 		switchWeaponAction.performed += SwitchWeapon;
 	}
@@ -40,21 +42,61 @@ public class PlayerAttack : MonoBehaviour
 
 	void Start()
 	{
+		// Calculate slash and shoot cooldowns
+		slashCooldown = 1f / playerScript.Sword.AttackSpeed;
+		shootCooldown = 1f / playerScript.Gun.AttackSpeed;
+
 		// Equip sword
 		sword.SetActive(true);
 		equippedWeapon = Weapons.SWORD;
 		gun.SetActive(false);
 	}
 
-	void Attack(InputAction.CallbackContext context)
+	void Update()
 	{
-		if (equippedWeapon == Weapons.SWORD)		// Sword Attack
+		// Check that the player is pressing/holding the attack button
+		if (attackAction.ReadValue<float>() == 1)
 		{
-			Slash();
+			if (equippedWeapon == Weapons.SWORD)        // Sword Attack
+			{
+				// Check that slash is off cooldown
+				if (slashCooldownTimer <= 0f)
+				{
+					Slash();
+					slashCooldownTimer = slashCooldown;
+				}
+			}
+			else                                        // Gun Attack
+			{
+				// Check that shoot is off cooldown
+				if (shootCooldownTimer <= 0f)
+				{
+					Shoot();
+					shootCooldownTimer = shootCooldown;
+				}
+			}
 		}
-		else										// Gun Attack
+
+		// Decrease the cooldowns of slash and shoot if they're on cooldown
+		if (slashCooldownTimer > 0f)
 		{
-			Shoot();
+			slashCooldownTimer -= Time.deltaTime;
+
+			// Fix value if over subtracted
+			if (slashCooldownTimer < 0f)
+			{
+				slashCooldownTimer = 0f;
+			}
+		}
+		if (shootCooldownTimer > 0f)
+		{
+			shootCooldownTimer -= Time.deltaTime;
+
+			// Fix value if over subtracted
+			if (shootCooldownTimer < 0f)
+			{
+				shootCooldownTimer = 0f;
+			}
 		}
 	}
 
@@ -72,7 +114,10 @@ public class PlayerAttack : MonoBehaviour
 		y = Mathf.Clamp(y, -playerScript.Sword.Range, playerScript.Sword.Range);
 
 		// Create a slash
-		Instantiate(slashPrefab, new Vector3(transform.position.x + x, transform.position.y + y, transform.position.z), transform.rotation);
+		Slash slashScript = Instantiate(slashPrefab, new Vector3(transform.position.x + x, transform.position.y + y, transform.position.z), transform.rotation).GetComponent<Slash>();
+
+		// Set the slash's damage
+		slashScript.damage = playerScript.Sword.Damage;
 	}
 
 	void Shoot()

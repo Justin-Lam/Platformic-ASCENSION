@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+	[HideInInspector] public int damage;
     [SerializeField] float moveSpeed;
     [SerializeField] Rigidbody2D rb;
 
@@ -21,7 +22,7 @@ public class Bullet : MonoBehaviour
 
 		if (collision.CompareTag("Enemy"))
 		{
-
+			collision.gameObject.GetComponent<Unit>().TakeDamage(damage);
 		}
 	}
 }

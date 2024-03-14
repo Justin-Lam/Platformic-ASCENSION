@@ -10,6 +10,9 @@ public class BulletPool : MonoBehaviour
     [SerializeField] GameObject bulletPrefab;
     List<GameObject> pooledBullets = new List<GameObject>();
 
+    [SerializeField] Player playerScript;
+	int bulletDamage;
+
 	void Awake()
 	{
 		if (instance == null)
@@ -20,10 +23,14 @@ public class BulletPool : MonoBehaviour
 
 	void Start()
     {
+        // Get the player's bullet damage
+        bulletDamage = playerScript.Gun.Damage;
+
         // Create the pooled bullets
         for (int i = 0; i < poolAmount; i++)
         {
             GameObject obj = Instantiate(bulletPrefab, gameObject.transform);       // create as children of the game object this script is attatched to so the hierarchy doesn't get too crowded
+            obj.GetComponent<Bullet>().damage = bulletDamage;                             // set the bullet's damage
             obj.SetActive(false);
             pooledBullets.Add(obj);
         }
