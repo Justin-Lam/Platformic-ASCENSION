@@ -14,7 +14,7 @@ public class ShopManager : MonoBehaviour
 	[SerializeField] int damageUpgradeCost = 50;
 	[SerializeField] float attackSpeedIncreaseAmount = 0.75f;				// Attack Speed
 	[SerializeField] int attackSpeedUpgradeCost = 50;
-	[SerializeField] int unlockDashCost = 100;                              // Unlock Dash
+	[SerializeField] int unlockDashCost = 100;								// Unlock Dash
 	[SerializeField] float dashCooldownDecreaseAmount = 0.25f;				// Dash Cooldown
 	[SerializeField] int dashCooldownUpgradeCost = 10;
 
@@ -42,6 +42,21 @@ public class ShopManager : MonoBehaviour
 	[SerializeField] TextMeshProUGUI gunAttackSpeedValueText;
 	[SerializeField] GameObject dashCooldownTextGO;							// Dash Cooldown
 	[SerializeField] TextMeshProUGUI dashCooldownValueText;
+
+
+	public void ResetUpgradeVariables()
+	{
+		maxHealthIncreaseAmount = 1;
+		maxHealthUpgradeCost = 10;
+		swordDamageIncreaseAmount = 2;
+		gunDamageIncreaseAmount = 1;
+		damageUpgradeCost = 50;
+		attackSpeedIncreaseAmount = 0.75f;
+		attackSpeedUpgradeCost = 50;
+		unlockDashCost = 100;
+		dashCooldownDecreaseAmount = 0.25f;
+		dashCooldownUpgradeCost = 10;
+	}
 
 	void Start()
 	{
