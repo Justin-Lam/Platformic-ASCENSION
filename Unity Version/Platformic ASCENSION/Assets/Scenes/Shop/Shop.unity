@@ -5304,15 +5304,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 179674e1cc5f25342b456525403d78dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialGold: 0
   initialMaxHealth: 5
   initialSwordDamage: 2
-  initialSwordAttackSpeed: 1
+  initialSwordAttackSpeed: 1.25
   initialGunDamage: 1
-  initialGunAttackSpeed: 1
-  initialDashCooldown: 5
-  swordRange: 1
+  initialGunAttackSpeed: 1.25
   dashUnlocked: 0
+  initialDashCooldown: 5
+  initialGold: 0
+  moveSpeed: 3.5
+  collisionDamage: 5
+  swordRange: 1
 --- !u!1 &1637779896
 GameObject:
   m_ObjectHideFlags: 0

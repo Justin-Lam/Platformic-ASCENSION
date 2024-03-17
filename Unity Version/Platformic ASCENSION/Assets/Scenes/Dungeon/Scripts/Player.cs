@@ -2,63 +2,60 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public class Weapon
+public class Player : MonoBehaviour
 {
-	[SerializeField] int damage;												public int Damage => damage;
-	[SerializeField][Tooltip("In attacks per second")] float attackSpeed;		public float AttackSpeed => attackSpeed;
-}
-
-[System.Serializable]
-public class Sword : Weapon
-{
-	[SerializeField] float range;												public float Range => range;
-}
-
-[System.Serializable]
-public class Gun : Weapon
-{
-
-}
-
-
-public class Player : Unit
-{
-	[Header("Weapon Stats")]
-	[SerializeField] Sword sword;		public Sword Sword => sword;
-	[SerializeField] Gun gun;			public Gun Gun => gun;
-
 	[Header("HUD")]
-	[SerializeField] DungeonHUD hud;
+	[SerializeField] DungeonHUD dungeonHUDScript;
+
+	// Stats
+	int maxHealth;
+	int health;
+	int collisionDamage;		public int CollisionDamage => collisionDamage;
 
 
-	protected override void Start()
+	void Start()
 	{
-		base.Start();
+		// Get a reference to the PlayerManager
+		PlayerManager pm = PlayerManager.instance;
+
+		// Initialize stats
+		maxHealth = pm.MaxHealth;
+		collisionDamage = pm.CollisionDamage;
+
+		// Initialize health
+		health = maxHealth;
 
 		// Initialize the health bar in the HUD
-		hud.SetPlayerHealthBar(health, maxHealth);
+		dungeonHUDScript.SetPlayerHealthBar(health, maxHealth);
 	}
 
-	public override void TakeDamage(int damage)
+	public void TakeDamage(int damage)
 	{
-		base.TakeDamage(damage);
+		// Take damage
+		health -= damage;
 
-		// Update the health bar in the HUD
-		hud.SetPlayerHealthBar(health, maxHealth);
+		// Update the health bar
+		dungeonHUDScript.SetPlayerHealthBar(health, maxHealth);
+
+		// Check if dead
+		if (health <= 0)
+		{
+			health = 0;
+			Die();
+		}
 	}
 
-	protected override void Die()
-	{
-		
-	}
-
-	void OnCollisionEnter2D(Collision2D collision)      // For when the player collides with an enemy
+	void OnCollisionEnter2D(Collision2D collision)      // For when an enemy collides with the player
 	{
 		if (collision.gameObject.CompareTag("Enemy"))
 		{
 			// Player takes collision damage from the enemy
-			gameObject.GetComponent<Unit>().TakeDamage(collision.gameObject.GetComponent<Unit>().CollisionDamage);
+			TakeDamage(collision.gameObject.GetComponent<Enemy>().CollisionDamage);
 		}
+	}
+
+	void Die()
+	{
+		// Go the death scene
 	}
 }

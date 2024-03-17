@@ -4,27 +4,31 @@ using UnityEngine;
 
 public class BulletPool : MonoBehaviour
 {
-    public static BulletPool instance;      // singleton pattern
-
-    [SerializeField] int poolAmount;
-    [SerializeField] GameObject bulletPrefab;
-    List<GameObject> pooledBullets = new List<GameObject>();
-
-    [SerializeField] Player playerScript;
-	int bulletDamage;
-
+    // Singleton Pattern
+    public static BulletPool instance;
 	void Awake()
 	{
 		if (instance == null)
-        {
-            instance = this;
-        }
+		{
+			instance = this;
+		}
 	}
+
+    [Header("Bullet Pool")]
+    [SerializeField] GameObject bulletPrefab;
+	[SerializeField] int poolAmount;
+	List<GameObject> pooledBullets = new List<GameObject>();
+
+    [Header("Player")]
+    [SerializeField] Player playerScript;
+	int bulletDamage;
+
+
 
 	void Start()
     {
         // Get the player's bullet damage
-        bulletDamage = playerScript.Gun.Damage;
+        bulletDamage = PlayerManager.instance.GunDamage;
 
         // Create the pooled bullets
         for (int i = 0; i < poolAmount; i++)

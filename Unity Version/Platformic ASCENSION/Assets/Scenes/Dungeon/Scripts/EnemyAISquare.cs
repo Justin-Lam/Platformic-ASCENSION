@@ -16,7 +16,7 @@ public class EnemyAISquare : MonoBehaviour
 		playerTransform = GameObject.Find("Player").transform;
 
         // Get moveSpeed
-        moveSpeed = GetComponent<Unit>().MoveSpeed;
+        moveSpeed = GetComponent<Enemy>().MoveSpeed;
     }
 
     void Update()

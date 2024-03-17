@@ -13,9 +13,15 @@ public class DungeonHUD : MonoBehaviour
 	[SerializeField] Slider healthBarSlider;
 	[SerializeField] TextMeshProUGUI healthText;
 
-	public void SetGoldCounter(int gold)
+	void Start()
 	{
-		goldText.text = "Gold: " + gold;
+		// Initialize gold counter
+		SetGoldCounter();
+	}
+
+	public void SetGoldCounter()
+	{
+		goldText.text = "Gold: " + PlayerManager.instance.Gold;
 	}
 
 	public void SetPlayerHealthBar(int health, int maxHealth)

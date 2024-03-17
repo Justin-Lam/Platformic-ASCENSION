@@ -17,12 +17,14 @@ public class Bullet : MonoBehaviour
 	{
 		if (collision.CompareTag("Bullet Wall"))
 		{
+			// Deactivate the bullet
 			gameObject.SetActive(false);
 		}
 
 		if (collision.CompareTag("Enemy"))
 		{
-			collision.gameObject.GetComponent<Unit>().TakeDamage(damage);
+			// Damage the enemy
+			collision.gameObject.GetComponent<Enemy>().TakeDamage(damage);
 		}
 	}
 }

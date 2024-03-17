@@ -11,11 +11,13 @@ public class PlayerMovement : MonoBehaviour
 	Vector2 moveDirection;
 
 	[Header("Dashing")]
+	[SerializeField] GameObject dashPopupTextGO;
 	[SerializeField] float dashMoveSpeed;
 	[SerializeField][Tooltip("In seconds")] float dashLength;
-	[SerializeField] float dashCooldown;
+	float dashCooldown;
 	float dashLengthCounter = 0f;
 	float dashCooldownCounter = 0f;
+	bool dashUnlocked;
 
 	[Header("Rigidbody and collider")]
 	[SerializeField] Rigidbody2D rb;
@@ -40,16 +42,32 @@ public class PlayerMovement : MonoBehaviour
 
 	void Start()
 	{
+		// Get a reference to the PlayerManager
+		PlayerManager pm = PlayerManager.instance;
+
 		// Get defaultMoveSpeed
-		defaultMoveSpeed = GetComponent<Unit>().MoveSpeed;
+		defaultMoveSpeed = pm.MoveSpeed;
 
 		// Initialize moveSpeed to defaultMoveSpeed
 		moveSpeed = defaultMoveSpeed;
+
+		// Get dashUnlocked
+		dashUnlocked = pm.DashUnlocked;
+
+		// Get dashCooldown if dash is unlocked
+		if (dashUnlocked)
+		{
+			dashCooldown = pm.DashCooldown;
+		}
+		else
+		{
+			dashPopupTextGO.SetActive(false);
+		}
 	}
 	void Update()
 	{
 		// Movement
-		// Record movement input when the player isn't dashing
+		// Record movement input while the player isn't dashing
 		if (dashLengthCounter <= 0)
 		{
 			moveDirection = movementAction.ReadValue<Vector2>();        // Input system should know that this is WASD from the inspector
@@ -61,7 +79,7 @@ public class PlayerMovement : MonoBehaviour
 		{
 			dashLengthCounter -= Time.deltaTime;
 
-			// If we just stopped dashing, reenable collider, set moveSpeed back to default, and fix dashLengthCounter if needed
+			// If we just stopped dashing, re-enable collider, set moveSpeed back to default, and fix dashLengthCounter if needed
 			if (dashLengthCounter < 0)
 			{
 				circleCollider.enabled = true;
@@ -78,6 +96,7 @@ public class PlayerMovement : MonoBehaviour
 			if (dashCooldownCounter < 0)
 			{
 				dashCooldownCounter = 0;
+				dashPopupTextGO.SetActive(true);
 			}
 		}
 	}
@@ -89,22 +108,21 @@ public class PlayerMovement : MonoBehaviour
 
 	void Dash(InputAction.CallbackContext context)
 	{
-		// Check that dash is off cooldown
-		if (dashCooldownCounter <= 0)
+		// Check that dash is unlocked, off cooldown, and that the player is moving
+		if (dashUnlocked && dashCooldownCounter <= 0 && moveDirection != Vector2.zero)
 		{
-			// Check that the player is moving
-			if (moveDirection != Vector2.zero)
-			{
-				// Disable collider
-				circleCollider.enabled = false;
+			// Disable collider
+			circleCollider.enabled = false;
 
-				// Set adjustedMoveSpeed
-				moveSpeed = dashMoveSpeed;
+			// Set adjustedMoveSpeed
+			moveSpeed = dashMoveSpeed;
 
-				// Set dashLengthCounter and dashCooldownCounter
-				dashLengthCounter = dashLength;
-				dashCooldownCounter = dashCooldown;
-			}
+			// Set dashLengthCounter and dashCooldownCounter
+			dashLengthCounter = dashLength;
+			dashCooldownCounter = dashCooldown;
+
+			// Hide dash popup text
+			dashPopupTextGO.SetActive(false);
 		}
 	}
 }

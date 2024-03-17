@@ -6,8 +6,8 @@ using UnityEngine.InputSystem;
 public class PlayerAttack : MonoBehaviour
 {
 	[Header("Player Scripts")]
-	[SerializeField] Player playerScript;
 	[SerializeField] PlayerLookAtMouse playerLookAtMouseScript;
+	PlayerManager pm;
 
 	[Header("Weapons")]
 	[SerializeField] GameObject sword;
@@ -15,6 +15,8 @@ public class PlayerAttack : MonoBehaviour
 	[SerializeField] GameObject slashPrefab;
 	[SerializeField] GameObject bulletPrefab;
 	[SerializeField] Transform bulletSpawnPoint;
+	enum Weapons { SWORD, GUN }
+	Weapons equippedWeapon;
 	float slashCooldown;
 	float slashCooldownTimer = 0f;
 	float shootCooldown;
@@ -23,9 +25,6 @@ public class PlayerAttack : MonoBehaviour
 	[Header("Input Actions")]
 	[SerializeField] InputAction attackAction;
 	[SerializeField] InputAction switchWeaponAction;
-
-	enum Weapons { SWORD, GUN }
-	Weapons equippedWeapon;
 
 
 	void OnEnable()
@@ -42,14 +41,15 @@ public class PlayerAttack : MonoBehaviour
 
 	void Start()
 	{
+		// Get a reference to the PlayerManager
+		pm = PlayerManager.instance;
+
 		// Calculate slash and shoot cooldowns
-		slashCooldown = 1f / playerScript.Sword.AttackSpeed;
-		shootCooldown = 1f / playerScript.Gun.AttackSpeed;
+		slashCooldown = 1f / pm.SwordAttackSpeed;
+		shootCooldown = 1f / pm.GunAttackSpeed;
 
 		// Equip sword
-		sword.SetActive(true);
-		equippedWeapon = Weapons.SWORD;
-		gun.SetActive(false);
+		EquipSword();
 	}
 
 	void Update()
@@ -110,14 +110,14 @@ public class PlayerAttack : MonoBehaviour
 		float y = direction.y;
 
 		// Clamp the componenets so they can't exceed 1 unit away from the player
-		x = Mathf.Clamp(x, -playerScript.Sword.Range, playerScript.Sword.Range);
-		y = Mathf.Clamp(y, -playerScript.Sword.Range, playerScript.Sword.Range);
+		x = Mathf.Clamp(x, -pm.SwordRange, pm.SwordRange);
+		y = Mathf.Clamp(y, -pm.SwordRange, pm.SwordRange);
 
 		// Create a slash
 		Slash slashScript = Instantiate(slashPrefab, new Vector3(transform.position.x + x, transform.position.y + y, transform.position.z), transform.rotation).GetComponent<Slash>();
 
 		// Set the slash's damage
-		slashScript.damage = playerScript.Sword.Damage;
+		slashScript.damage = pm.SwordDamage;
 	}
 
 	void Shoot()
@@ -141,15 +141,23 @@ public class PlayerAttack : MonoBehaviour
 	{
 		if (equippedWeapon == Weapons.SWORD)
 		{
-			sword.SetActive(false);
-			equippedWeapon = Weapons.GUN;
-			gun.SetActive(true);
+			EquipGun();
 		}
 		else
 		{
-			gun.SetActive(false);
-			equippedWeapon = Weapons.SWORD;
-			sword.SetActive(true);
+			EquipSword();
 		}
+	}
+	void EquipSword()
+	{
+		gun.SetActive(false);
+		equippedWeapon = Weapons.SWORD;
+		sword.SetActive(true);
+	}
+	void EquipGun()
+	{
+		sword.SetActive(false);
+		equippedWeapon = Weapons.GUN;
+		gun.SetActive(true);
 	}
 }
