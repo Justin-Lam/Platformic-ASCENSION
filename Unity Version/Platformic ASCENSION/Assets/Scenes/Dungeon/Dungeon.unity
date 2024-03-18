@@ -487,13 +487,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initialMaxHealth: 5
   initialSwordDamage: 2
-  initialSwordAttackSpeed: 1
+  initialSwordAttackSpeed: 1.25
   initialGunDamage: 1
-  initialGunAttackSpeed: 1
+  initialGunAttackSpeed: 1.25
   dashUnlocked: 0
   initialDashCooldown: 5
   initialGold: 0
-  moveSpeed: 3.5
+  moveSpeed: 2.5
   collisionDamage: 5
   swordRange: 1
 --- !u!4 &484961385
@@ -2435,12 +2435,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpawnTime: 60
+  spawnRadiusFromPlayer: 10
   playerTransform: {fileID: 905736844}
   timerScript: {fileID: 2045783713}
   squareEnemyPrefab: {fileID: 6919362470765551763, guid: b5c512ecaba72284ab85ea02c96502b6, type: 3}
-  spawnRadiusFromPlayer: 10
   squareMinTimeElapsedToSpawn: 0
   squareSpawnRate: 1
+  triangleEnemyPrefab: {fileID: 1920673417554222557, guid: 6a8ffc2d60b50ec4a9d670e2cc70bd6b, type: 3}
+  triangleMinTimeElapsedToSpawn: 19
+  triangleSpawnRate: 5
 --- !u!114 &2045783713
 MonoBehaviour:
   m_ObjectHideFlags: 0

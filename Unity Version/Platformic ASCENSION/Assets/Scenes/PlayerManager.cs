@@ -33,7 +33,7 @@ public class PlayerManager : MonoBehaviour
 
 	[Header("Non-upgradable Player Variables")]
 	[SerializeField] int initialGold = 0;
-	[SerializeField] float moveSpeed = 3.5f;		public float MoveSpeed => moveSpeed;
+	[SerializeField] float moveSpeed = 2.5f;		public float MoveSpeed => moveSpeed;
 	[SerializeField] int collisionDamage = 5;		public int CollisionDamage => collisionDamage;
 	[SerializeField] float swordRange = 1f;			public float SwordRange => swordRange;
 	int gold; public int Gold => gold;

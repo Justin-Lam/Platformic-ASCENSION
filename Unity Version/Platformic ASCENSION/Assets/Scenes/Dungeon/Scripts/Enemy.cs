@@ -15,8 +15,6 @@ public class Enemy : MonoBehaviour
 	[SerializeField] Rigidbody2D rb;
 	[SerializeField] Animator animator;
 
-	DungeonHUD dungeonHUDScript;
-
 
 	void Awake()
 	{
