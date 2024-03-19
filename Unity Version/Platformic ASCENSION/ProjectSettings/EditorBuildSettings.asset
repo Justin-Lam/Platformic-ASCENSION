@@ -14,4 +14,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Dungeon/Dungeon.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/Death Screen/Death Screen.unity
+    guid: fd73121f2652ebf4cac04f039c07a77d
+  - enabled: 1
+    path: Assets/Scenes/Victory Screen/Victory Screen.unity
+    guid: 58b215995fe9dbf4598c84433e3c06bf
   m_configObjects: {}

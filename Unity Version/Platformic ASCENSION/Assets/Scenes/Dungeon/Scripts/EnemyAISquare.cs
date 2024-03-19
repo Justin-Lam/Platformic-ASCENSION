@@ -7,20 +7,20 @@ public class EnemyAISquare : MonoBehaviour
 	[SerializeField] Rigidbody2D rb;
 
 	Transform playerTransform;
-    float moveSpeed;
-    Vector2 moveDirection;
+	float moveSpeed;
+	Vector2 moveDirection;
 
-    void Start()
-    {
+	void Start()
+	{
 		// Get playerTransform
 		playerTransform = GameObject.Find("Player").transform;
 
-        // Get moveSpeed
-        moveSpeed = GetComponent<Enemy>().MoveSpeed;
-    }
+		// Get moveSpeed
+		moveSpeed = GetComponent<Enemy>().MoveSpeed;
+	}
 
-    void Update()
-    {
+	void Update()
+	{
 		// Get moveDirection: a normalized vector from the square enemy's position to the player's position
 		moveDirection = playerTransform.position - transform.position;
 		moveDirection.Normalize();

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -52,10 +53,16 @@ public class Player : MonoBehaviour
 			// Player takes collision damage from the enemy
 			TakeDamage(collision.gameObject.GetComponent<Enemy>().CollisionDamage);
 		}
+		if (collision.gameObject.CompareTag("Boss"))
+		{
+			// Player takes collision damage from the boss
+			TakeDamage(collision.gameObject.GetComponent<Boss>().CollisionDamage);
+		}
 	}
 
 	void Die()
 	{
 		// Go the death scene
+		SceneManager.LoadScene("Death Screen");
 	}
 }

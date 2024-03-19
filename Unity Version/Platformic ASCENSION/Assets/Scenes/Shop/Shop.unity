@@ -3999,8 +3999,8 @@ MonoBehaviour:
   swordDamageIncreaseAmount: 2
   gunDamageIncreaseAmount: 1
   damageUpgradeCost: 50
-  attackSpeedIncreaseAmount: 0.75
-  attackSpeedUpgradeCost: 50
+  attackSpeedIncreaseAmount: 0.45
+  attackSpeedUpgradeCost: 25
   unlockDashCost: 100
   dashCooldownDecreaseAmount: 0.25
   dashCooldownUpgradeCost: 10
