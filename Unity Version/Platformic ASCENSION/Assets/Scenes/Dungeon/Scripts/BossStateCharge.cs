@@ -18,7 +18,6 @@ public class BossStateCharge : MonoBehaviour
 
 	void OnEnable()
 	{
-		Debug.Log("Charging");
 		// Initialize chargeTimer
 		chargeTimer = chargeTime;
 	}

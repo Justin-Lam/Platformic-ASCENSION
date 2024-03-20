@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Boss : MonoBehaviour
 {
-	[Header("Stats")]
 	[SerializeField] int maxHealth;
-	[SerializeField] int collisionDamage; public int CollisionDamage => collisionDamage;
 	int health;
+	[SerializeField] int collisionDamage; public int CollisionDamage => collisionDamage;
+	[SerializeField] Slider healthBar;
 
 
 	void Awake()
@@ -17,10 +18,20 @@ public class Boss : MonoBehaviour
 		health = maxHealth;
 	}
 
+	private void Start()
+	{
+		// Show and set health bar
+		healthBar.gameObject.SetActive(true);
+		SetHealthBar();
+	}
+
 	public void TakeDamage(int damage)
 	{
 		// Take damage
 		health -= damage;
+
+		// Update health bar
+		SetHealthBar();
 
 		// Check if dead
 		if (health <= 0)
@@ -36,6 +47,10 @@ public class Boss : MonoBehaviour
 			// Enemy takes collision damage from the player
 			TakeDamage(collision.gameObject.GetComponent<Player>().CollisionDamage);
 		}
+	}
+	void SetHealthBar()
+	{
+		healthBar.value = (float)health / (float)maxHealth;
 	}
 
 	void Die()

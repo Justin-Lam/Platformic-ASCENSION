@@ -15,16 +15,19 @@ public class BossStateDashAndShoot : MonoBehaviour
 	[SerializeField] GameObject projectile;
 	[SerializeField] int projectileDamage;
 	[SerializeField] int dashAndShootAmount;
-	int dashAndShootCounter = 0;
+	int dashAndShootCounter;
 	[SerializeField] float waitTime;
-	float waitTimer = 0f;
+	float waitTimer;
 
 
 	void OnEnable()
 	{
-		Debug.Log("Shooting");
 		// Disable collider
 		colliderComponent.enabled = false;
+
+		// Inititalize dashAndShootCounter and waitTimer
+		dashAndShootCounter = 0;
+		waitTimer = 0f;
 	}
 
 	void Update()

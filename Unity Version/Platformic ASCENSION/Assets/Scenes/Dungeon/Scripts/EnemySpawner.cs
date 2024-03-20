@@ -31,6 +31,10 @@ public class EnemySpawner : MonoBehaviour
 	[SerializeField][Tooltip("Spawn every x seconds")] float hexagonSpawnRate;
 	float hexagonSpawnTimer = 0f;
 
+	[Header("Boss")]
+	[SerializeField] GameObject bossGO;
+	[SerializeField] float bossSpawnTime;
+
 
 	void Update()
 	{
@@ -125,6 +129,13 @@ public class EnemySpawner : MonoBehaviour
 			triangleSpawnRate /= 2f;
 			hexagonSpawnRate /= 2f;
 			increasedSpawnRates = true;
+		}
+
+		// Spawn Boss
+		if (timerScript.TimeElapsed >= bossSpawnTime && bossGO.activeSelf == false)
+		{
+			bossGO.SetActive(true);
+			bossGO.transform.position = (Vector2)playerTransform.position + new Vector2(0f, 5f);
 		}
 	}
 }

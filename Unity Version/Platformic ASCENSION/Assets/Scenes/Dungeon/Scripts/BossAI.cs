@@ -43,7 +43,7 @@ public class BossAI : MonoBehaviour
 		else
 		{
 			// Choose a random attack
-			attack = (Attack)Random.Range(0, 2);
+			attack = (Attack)Random.Range(0, 5);
 
 			// Execute that attack
 			switch (attack)

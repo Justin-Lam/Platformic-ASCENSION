@@ -11,13 +11,12 @@ public class BossStateRest : MonoBehaviour
 
 	void OnEnable()
 	{
-		Debug.Log("Resting");
 		restTimer = restTime;
 	}
 
 	void Update()
 	{
-		if (restTime <= 0f)
+		if (restTimer <= 0f)
 		{
 			ai.ChooseRandomAttack();
 		}

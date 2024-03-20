@@ -4,20 +4,28 @@ using UnityEngine;
 
 public class BossStateLasers : MonoBehaviour
 {
-	public void Activate()
-	{
+	[SerializeField] BossAI ai;
 
+	[SerializeField] GameObject lasersGO;
+	[SerializeField] float duration;
+	float timer;
+
+	void OnEnable()
+	{
+		timer = duration;
+		lasersGO.SetActive(true);
 	}
 
-	// Start is called before the first frame update
-	void Start()
-	{
-		
-	}
-
-	// Update is called once per frame
 	void Update()
 	{
-		
+		transform.rotation = Quaternion.identity;
+
+		if (timer <= 0)
+		{
+			lasersGO.SetActive(false);
+			ai.ChooseRandomAttack();
+		}
+
+		timer -= Time.deltaTime;
 	}
 }

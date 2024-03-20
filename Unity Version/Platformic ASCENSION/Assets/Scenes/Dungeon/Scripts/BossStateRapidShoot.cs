@@ -4,20 +4,29 @@ using UnityEngine;
 
 public class BossStateRapidShoot : MonoBehaviour
 {
-	public void Activate()
-	{
+	[SerializeField] BossAI ai;
+	[SerializeField] GameObject projectilePortalsGO;
+	[SerializeField] float duration;
+	float timer;
 
+	void OnEnable()
+	{
+		// Enable projectile portals
+		projectilePortalsGO.SetActive(true);
+
+		// Initialize timer
+		timer = duration;
 	}
 
-	// Start is called before the first frame update
-	void Start()
-	{
-		
-	}
-
-	// Update is called once per frame
 	void Update()
 	{
-		
+		if (timer <= 0f)
+		{
+			projectilePortalsGO.SetActive(false);
+			ai.ChooseRandomAttack();
+		}
+
+		// Decrement timer
+		timer -= Time.deltaTime;
 	}
 }

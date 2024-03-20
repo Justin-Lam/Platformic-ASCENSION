@@ -13,6 +13,11 @@ public class Slash : MonoBehaviour
 			// Damage the enemy
 			collision.gameObject.GetComponent<Enemy>().TakeDamage(damage);
 		}
+		if (collision.CompareTag("Boss"))
+		{
+			// Damage the boss
+			collision.gameObject.GetComponent<Boss>().TakeDamage(damage);
+		}
 	}
 
 	void Destroy()      // Called by an event in the "Slash" animation
