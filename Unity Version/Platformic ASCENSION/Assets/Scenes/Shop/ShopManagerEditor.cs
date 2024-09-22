@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
 
 [CustomEditor(typeof(ShopManager))]
@@ -19,3 +20,4 @@ public class ShopManagerEditor : Editor
 		DrawDefaultInspector();
 	}
 }
+#endif
